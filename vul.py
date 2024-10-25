@@ -22,5 +22,5 @@ url_list = [
     "http://127.0.0.1:3000/redirect",
 ]
 target_redirect_url = "https://baidu.com"
-secondary_redirect_url = "https://etherscan.io/address/0x0f933ab9fcaaa782d0279c300d73750e1311eae6"
+secondary_redirect_url = "https://etherscan.io/address/0x0f933ab9fcaaa782d0279c300d73750e1311eae"
 batch_check_redirect(url_list, target_redirect_url, secondary_redirect_url)
