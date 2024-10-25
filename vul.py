@@ -1,23 +1,27 @@
 import requests
 from requests.exceptions import SSLError, RequestException
-from urllib.parse import urlparse
 
 def check_redirect_vulnerability(base_url, target_redirect_url, secondary_redirect_url):
     try:
         test_url = f"{base_url}?to={target_redirect_url}?to={secondary_redirect_url}"
-        response = requests.head(test_url, allow_redirects=True, verify=False)
 
 
-        final_url_domain = urlparse(response.url).netloc
-        target_domain = urlparse(target_redirect_url).netloc
+        response = requests.get(test_url, allow_redirects=True, verify=False)
 
 
-        if final_url_domain == target_domain:
-            print(f"[VULNERABLE] {test_url} redirects fully to {target_redirect_url}")
-        elif response.url == secondary_redirect_url:
-            print(f"[SAFE] {test_url} redirects as expected, final URL is {secondary_redirect_url}")
+        if response.status_code == 406:
+            print(f"[SAFE] {test_url} was rejected (406), indicating a safe state.")
+        elif response.status_code == 200:
+            final_url = response.url
+            print(f"[INFO] {test_url} redirected to: {final_url}")
+            if final_url == target_redirect_url:
+                print(f"[VULNERABLE] {test_url} redirects to a malicious site: {final_url}")
+            elif final_url == secondary_redirect_url:
+                print(f"[SAFE] {test_url} redirects as expected, final URL is {final_url}")
+            else:
+                print(f"[VULNERABLE] {test_url} redirects to an unexpected site: {final_url}")
         else:
-            print(f"[SAFE] {test_url} does not redirect to malicious site, final URL is {response.url}")
+            print(f"[INFO] {test_url} returned status code: {response.status_code}")
 
     except SSLError as ssl_error:
         print(f"SSL error while checking {base_url}: {ssl_error}")
@@ -29,9 +33,8 @@ def batch_check_redirect(url_list, target_redirect_url, secondary_redirect_url):
         check_redirect_vulnerability(url, target_redirect_url, secondary_redirect_url)
 
 url_list = [
-    "http://127.0.0.1:3000/redirect",
+    "http://192.168.1.130:3000/redirect",
 ]
 target_redirect_url = "https://baidu.com"
 secondary_redirect_url = "https://etherscan.io/address/0x0f933ab9fcaaa782d0279c300d73750e1311eae6"
-
 batch_check_redirect(url_list, target_redirect_url, secondary_redirect_url)
