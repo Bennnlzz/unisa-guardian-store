@@ -13,7 +13,8 @@ exports.redirectAllowlist = redirectAllowlist
 exports.isRedirectAllowed = (url: string) => {
   let allowed = false
   for (const allowedUrl of redirectAllowlist) {
-    allowed = allowed || url.includes(encodeURI(allowedUrl))
+    // allowed = allowed || url.includes(encodeURI(allowedUrl))
+    allowed = allowed && url.includes(allowedUrl)
   }
   return allowed
 }
