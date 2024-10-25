@@ -33,8 +33,6 @@ function isRedirectAllowed(url: string) {
   }
   return allowed
 }
-
-
 module.exports = function performRedirect() {
   return ({ query }: Request, res: Response, next: NextFunction) => {
     const toUrl = query.to
