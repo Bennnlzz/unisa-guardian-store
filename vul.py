@@ -4,7 +4,7 @@ from requests.exceptions import SSLError, RequestException
 def check_redirect_vulnerability(base_url, target_redirect_url, secondary_redirect_url):
     try:
         test_url = f"{base_url}?to={target_redirect_url}?to={secondary_redirect_url}"
-
+        # print(test_url)
 
         response = requests.get(test_url, allow_redirects=True, verify=False)
 
@@ -35,6 +35,6 @@ def batch_check_redirect(url_list, target_redirect_url, secondary_redirect_url):
 url_list = [
     "http://127.0.0.1:3000/redirect",
 ]
-target_redirect_url = "https://google.com"
-secondary_redirect_url = "https://etherscan.io/address/0x0f933ab9fcaaa782d0279c300d73750e1311eae"
+target_redirect_url = "https://baidu.com"
+secondary_redirect_url = "https://etherscan.io/address/0x0f933ab9fcaaa782d0279c300d73750e1311eae6"
 batch_check_redirect(url_list, target_redirect_url, secondary_redirect_url)
