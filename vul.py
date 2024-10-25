@@ -33,7 +33,7 @@ def batch_check_redirect(url_list, target_redirect_url, secondary_redirect_url):
         check_redirect_vulnerability(url, target_redirect_url, secondary_redirect_url)
 
 url_list = [
-    "http://192.168.1.130:3000/redirect",
+    "http://127.0.0.1:3000/redirect",
 ]
 target_redirect_url = "https://baidu.com"
 secondary_redirect_url = "https://etherscan.io/address/0x0f933ab9fcaaa782d0279c300d73750e1311eae6"
